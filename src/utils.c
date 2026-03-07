@@ -13,17 +13,23 @@ unsigned long hash(const char* str)
     return hash;
 }
 
+
+bool initHashmap() 
+{
+
+}
+
 unsigned int getValue(char *key, hashmap *map) 
 {
     return 0;
 }
 
-unsigned int insertValue(char *key, unsigned int value, hashmap *map)
+unsigned int insertValue(char *key, float value, hashmap *map)
 {
     return 0;
 }
 
-bool setValue(char *key, unsigned int value, hashmap *map) 
+bool setValue(char *key, float value, hashmap *map) 
 {
     return false;
 }
