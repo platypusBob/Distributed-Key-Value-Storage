@@ -1,8 +1,24 @@
+/**
+*******************************************************************************
+* @file : utils.h
+* @brief : Declares utilities for the kv-pair storage system.
+*******************************************************************************
+* This file contains the functions needed to create and manage KV objects and
+* hashmaps. 
+*
+* @author : Matheus Reato B. Piao
+* @date : 07 Mar 2026
+* @version : 1.0
+*******************************************************************************
+*/
+
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 
 #define MAP_SIZE 100
 #define KEY_BYTES 32
@@ -10,10 +26,11 @@
 
 typedef struct kvPair
 {
-    char *key;
+    const char *key;
     float value;
     struct kvPair *next;   
 } kvPair;
+
 
 typedef struct hashmap
 {
@@ -24,13 +41,15 @@ typedef struct hashmap
 
 unsigned long hash(const char* str);
 
-unsigned int getValue(char *key, hashmap *map);
+kvPair* initKvPair(const char *key, float value);
 
-unsigned int insertValue(char *key, float value, hashmap *map);
+void destroyKvPair(kvPair *node);
 
-bool setValue(char *key, float value, hashmap map);
+float getValue(char *key, hashmap *map);
 
-bool deleteValue(char *key, hashmap*map);
+bool insertValue(char *key, float value, hashmap *map);
+
+bool setValue(char *key, float value, hashmap *map);
 
 void showMap(hashmap *map);
 

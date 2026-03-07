@@ -1,8 +1,21 @@
+/**
+*******************************************************************************
+* @file : utils.c
+* @brief : Implements utilities for the kv-pair storage system.
+*******************************************************************************
+* This file contains the functions needed to create and manage KV objects and
+* hashmaps. 
+*
+* @author : Matheus Reato B. Piao
+* @date : 07 Mar 2026
+* @version : 1.0
+*******************************************************************************
+*/
+
 #include "utils.h"
 
-// Hashmap implementation -----------------------------------------------------
 
-unsigned long hash(const char* str) 
+unsigned long hash(const char* str)   // djb2
 {
     unsigned long hash = 5381;
     int c;
@@ -14,34 +27,56 @@ unsigned long hash(const char* str)
 }
 
 
+kvPair* initKvPair(const char *key, float value) 
+{
+    kvPair *node = (kvPair*)malloc(sizeof(kvPair));
+
+    if (node == NULL)
+        return NULL;
+
+    node->key = key;
+    node->value = value;
+    node->next = NULL;
+
+    return node;
+}
+
+
+void destroyKvPair(kvPair *node)
+{
+    if (node == NULL)
+        return;
+
+    free(node);
+}
+
+
 bool initHashmap() 
 {
-
+    return false;
 }
 
-unsigned int getValue(char *key, hashmap *map) 
+
+float getValue(char *key, hashmap *map) 
 {
     return 0;
 }
 
-unsigned int insertValue(char *key, float value, hashmap *map)
+
+bool insertValue(char *key, float value, hashmap *map)
 {
     return 0;
 }
+
 
 bool setValue(char *key, float value, hashmap *map) 
 {
     return false;
 }
 
-bool deleteValue(char *key, hashmap *map) 
-{
-    return false;
-}
 
 void showMap(hashmap *map)
 {
     return;
 }
 
-// ----------------------------------------------------------------------------
