@@ -11,7 +11,10 @@ int main()
 
     kvPair *node1 = initKvPair(key1, value1);
 
-    printf("%c -> %f", *(node1->key), node1->value);
+    printf("%s ", node1->key);
+    printf("%f", node1->value);
+    
+    destroyKvPair(node1);
 
     return 0;
 }
