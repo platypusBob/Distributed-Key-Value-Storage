@@ -1,46 +1,151 @@
 #include "utils.h"
 
+#define BUFFER_SIZE 256
 
     int main() 
     {
-        // Creating values
-
-        char key1[KEY_BYTES] = "aa";
-        float value1 = 42.1;
-        float output1 = 0;
-
-        char key2[KEY_BYTES] = "b@";
-        float value2 = 30.1;
-        float output2 = 0;
-
-        // Creating the hashmap
-
         hashmap *map1 = initHashmap();
 
-        // Inserting values
+        if (map1 == NULL)
+        {
+            printf("Hashmap init failed\n");
+            return 0;
+        }
 
-        bool set1 = insertValue(key1, value1, map1);
+        printf("\n");
+        printf("--------------------------------\n");
+        printf("---------- KVPlatypus ----------\n");
+        printf("--------------------------------\n");
+        printf("\n");
 
-        bool set2 = insertValue(key2, value2, map1);
+        char input[BUFFER_SIZE];
 
-        // Getting values
+        while(true)
+        {
+            printf("-- KVPlayupus --> ");
 
-        bool get1 = getValue(key1, map1, &output1);
-            
-        bool get2 = getValue(key2, map1, &output2);
+            if (fgets(input, BUFFER_SIZE, stdin) == NULL)
+            {
+                break;
+            }
 
-        // Updating kv2
+            input[strcspn(input, "\n")] = 0; // Remove \n
+            char *command = strtok(input, " ");
 
-        bool updt2 = updateValue(key2, 50.1, map1);
+            if (strcmp(input, "QUIT") == 0)
+            {
+                break;
+            }
+            else if (strcmp(input, "HELP") == 0)
+            {
+                printf("\n");
+                printf("----------- COMMANDS -----------\n");
+                printf("\n");
+                printf("GET <key>         : returns the value associated with <key>\n");
+                printf("SET <key> <value> : sets <key>'s value to <value>\n");
+                printf("  Attention: if <key> already exists, SET updates it.\n");
+                printf("DEL <key>         : deactivates <key>\n");
+                printf("\n");
+            }
+            else if (strcmp(command, "GET") == 0)
+            {
+                char *key = strtok(NULL, " ");
+                float output = 0;
+                bool opStatus = getValue(key, map1, &output);
 
-        // Show
+                if (!opStatus)
+                {
+                    printf("\n");
+                    printf("Operation failed. Key might not exist or be deactivated.\n");
+                    printf("\n");
+                }
+                else
+                {
+                    printf("\n");
+                    printf("--------------------------------\n");
+                    printf("Key   : %s\n", key);
+                    printf("Value : %f\n", output);
+                    printf("--------------------------------\n");
+                    printf("\n");
+                }
+            }
+            else if (strcmp(command, "SET") == 0)
+            {
+                char *key = strtok(NULL, " ");
+                char *valueStr = strtok(NULL, " ");
+                float value = strtof(valueStr, NULL);
+                float output = 0;
+                bool opStatus = false;
+                bool update;   // true if the value was updated, false if inserted.
 
-        deleteNode(key2, map1);
-        showMap(map1);
+                if (key && value)
+                {
+                    if (getValue(key, map1, &output))
+                    {
+                        opStatus = updateValue(key, value, map1);
+                        update = true;
+                    }
+                    else
+                    {
+                        opStatus = insertValue(key, value, map1);
+                        update = false;
+                    }
+                }
+                else
+                {
+                    printf("\n");
+                    printf("Usage: SET <key> <value>\n");
+                    printf("\n");
 
-        // Cleaning up
+                    continue;
+                }
+
+                if (opStatus)
+                {
+                    if (update) 
+                    {
+                        printf("\n");
+                        printf("--------------------------------\n");
+                        printf("Updated value %f for key %s\n", value, key);
+                        printf("--------------------------------\n");
+                        printf("\n");
+                    }
+                    else
+                    {
+                        printf("\n");
+                        printf("--------------------------------\n");
+                        printf("Inserted value %f for key %s\n", value, key);
+                        printf("--------------------------------\n");
+                        printf("\n");
+                    }
+                }
+                else 
+                {
+                    printf("\n");
+                    printf("Operation failed.\n");
+                    printf("\n");
+                }
+            }
+            else if (strcmp(command, "DEL") == 0)
+            {
+                char *key = strtok(NULL, " ");
+                deleteNode(key, map1);
+
+                printf("\n");
+                printf("--------------------------------\n");
+                printf("Key %s deactivated\N", key);
+                printf("--------------------------------\n");
+                printf("\n");
+            }
+            else
+            {
+                printf("\n");
+                printf("Invalid command\n");
+                printf("\n");
+            }
+        }
 
         destroyHashmap(map1);
-            
+
         return 0;
     }
