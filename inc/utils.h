@@ -16,6 +16,7 @@
 #define UTILS_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>

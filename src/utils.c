@@ -71,6 +71,8 @@ hashmap* initHashmap()
         map->buckets[i] = NULL;
     }
 
+    map->numActiveItems = 0;
+
     return map;
 }
 
@@ -197,6 +199,35 @@ bool updateValue(char *key, float newValue, hashmap *map)
 
 void showMap(hashmap *map)
 {
-    return;
+    if (map == NULL)
+    {
+        printf("Argument 'map' is invalid\n");
+        return;
+    }
+
+    int count = 1;
+    printf("---------- HASHMAP OVERVIEW ----------\n");
+    printf("Active items : %d\n", map->numActiveItems);
+    printf("\n");
+
+    for (int i=0; i<MAP_SIZE; i++)
+    {
+        if (map->buckets[i] != NULL)
+        {
+            kvPair *current = map->buckets[i];
+
+            while (current != NULL)
+            {
+                printf("--------------- NODE %d ---------------\n", count);
+                printf("Key   : %s\n", current->key);
+                printf("Value : %f\n", current->value);
+                printf("--------------------------------------\n");
+                printf("\n");
+
+                count++;
+                current = current->next;
+            }
+        }
+    }
 }
 
