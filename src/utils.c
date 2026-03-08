@@ -38,8 +38,8 @@ kvPair* initKvPair(const char *key, float value)
 
     strncpy(node->key, key, KEY_BYTES - 1);
     node->key[KEY_BYTES - 1] = '\0';
-
     node->value = value;
+    node->active = true;
     node->next = NULL;
 
     return node;
@@ -102,7 +102,26 @@ void destroyHashmap(hashmap *map)
 
 void cleanHashmap(hashmap *map)
 {
-    return;
+    if (map == NULL)
+    {
+        return;
+    }
+    
+    for (int i=0; i<MAP_SIZE; i++) 
+    {
+        kvPair *current = map->buckets[i];
+
+        while (current!= NULL)
+        {
+            kvPair *next = current->next;
+            free(current);
+            current = next;
+        }
+
+        map->buckets[i] = NULL;
+    }
+
+    map->numActiveItems = 0;
 }
 
 
@@ -197,6 +216,31 @@ bool updateValue(char *key, float newValue, hashmap *map)
 }
 
 
+void deleteNode(char *key, hashmap *map)
+{
+    if (key == NULL || map == NULL)
+    {
+        return;
+    }
+
+    unsigned long index = hash(key) % MAP_SIZE;
+    kvPair *current = map->buckets[index];
+
+    while (current != NULL) 
+    {
+        if (strcmp(current->key, key) == 0)
+        {
+            current->active = false;
+            return;
+        }
+            
+        current = current->next;
+    }
+
+    return;
+}
+
+
 void showMap(hashmap *map)
 {
     if (map == NULL)
@@ -219,8 +263,10 @@ void showMap(hashmap *map)
             while (current != NULL)
             {
                 printf("--------------- NODE %d ---------------\n", count);
-                printf("Key   : %s\n", current->key);
-                printf("Value : %f\n", current->value);
+                printf("Bucket index : %d\n", i);
+                printf("Key          : %s\n", current->key);
+                printf("Value        : %f\n", current->value);
+                printf("Active       : %d\n", current->active);
                 printf("--------------------------------------\n");
                 printf("\n");
 

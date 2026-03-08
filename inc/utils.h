@@ -29,6 +29,7 @@ typedef struct kvPair   // Node size = 44 bytes
 {
     char key[KEY_BYTES];
     float value;
+    bool active;
     struct kvPair *next;   
 } kvPair;
 
@@ -58,6 +59,8 @@ bool insertValue(char *key, float value, hashmap *map);
 bool getValue(char *key, hashmap *map, float *output);
 
 bool updateValue(char *key, float newValue, hashmap *map);
+
+void deleteNode(char *key, hashmap *map);
 
 void showMap(hashmap *map);
 

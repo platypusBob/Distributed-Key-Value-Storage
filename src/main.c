@@ -35,6 +35,7 @@
 
         // Show
 
+        deleteNode(key2, map1);
         showMap(map1);
 
         // Cleaning up
