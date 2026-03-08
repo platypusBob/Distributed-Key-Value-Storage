@@ -170,8 +170,27 @@ bool getValue(char *key, hashmap *map, float *output)
 }
 
 
-bool setValue(char *key, float value, hashmap *map) 
+bool updateValue(char *key, float newValue, hashmap *map) 
 {
+    if (key == NULL || map == NULL)
+    {
+        return false;
+    }
+
+    unsigned long index = hash(key) % MAP_SIZE;
+    kvPair *current = map->buckets[index];
+
+    while (current != NULL) 
+    {
+        if (strcmp(current->key, key) == 0)
+        {
+            current->value = newValue;
+            return true;
+        }
+            
+        current = current->next;
+    }
+
     return false;
 }
 

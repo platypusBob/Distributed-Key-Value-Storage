@@ -56,7 +56,7 @@ bool insertValue(char *key, float value, hashmap *map);
 
 bool getValue(char *key, hashmap *map, float *output);
 
-bool setValue(char *key, float value, hashmap *map);
+bool updateValue(char *key, float newValue, hashmap *map);
 
 void showMap(hashmap *map);
 

@@ -80,6 +80,20 @@
             return 0;
         }
 
+        printf("-------------------------------\n");
+
+        // Updating kv2
+
+        bool updt2 = updateValue(key2, 50.1, map1);
+
+        if (updt2)
+            printf("Updt2 did not return any errors\n");
+        else
+            printf("Updt2 returned an error\n");
+
+        bool getUpdate = getValue(key2, map1, &output2);
+        printf("New value : %f\n", output2);
+
         // Cleaning up
 
         destroyHashmap(map1);
