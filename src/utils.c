@@ -29,10 +29,12 @@ unsigned long hash(const char* str)   // djb2
 
 kvPair* initKvPair(const char *key, float value) 
 {
-    kvPair *node = (kvPair*)malloc(sizeof(kvPair));
+    kvPair *node = malloc(sizeof(kvPair));
 
     if (node == NULL)
+    {
         return NULL;
+    }
 
     strncpy(node->key, key, KEY_BYTES - 1);
     node->key[KEY_BYTES - 1] = '\0';
@@ -47,7 +49,9 @@ kvPair* initKvPair(const char *key, float value)
 void destroyKvPair(kvPair *node)
 {
     if (node == NULL)
+    {
         return;
+    }
 
     free(node);
 }
@@ -55,10 +59,12 @@ void destroyKvPair(kvPair *node)
 
 hashmap* initHashmap() 
 {
-    hashmap *map = (hashmap*)malloc(sizeof(hashmap));
+    hashmap *map = malloc(sizeof(hashmap));
 
-    if (map = NULL)
+    if (map == NULL)
+    {
         return NULL;
+    }
     
     for (int i = 0; i < MAP_SIZE; i++)
     {
@@ -72,7 +78,9 @@ hashmap* initHashmap()
 void destroyHashmap(hashmap *map) 
 {
     if (map == NULL)
+    {
         return;
+    }
     
     for (int i=0; i<MAP_SIZE; i++) 
     {
@@ -90,15 +98,75 @@ void destroyHashmap(hashmap *map)
 }
 
 
-float getValue(char *key, hashmap *map) 
+void cleanHashmap(hashmap *map)
 {
-    return 0;
+    return;
 }
 
 
 bool insertValue(char *key, float value, hashmap *map)
 {
+    // Keys are assumed to be unique because they include timestamps.
+    // Therefore this function does not check for duplicates.
     
+    if (map == NULL || key == NULL)
+    {
+        return false;
+    }
+
+    unsigned long index = hash(key) % MAP_SIZE;
+
+    kvPair *newNode = initKvPair(key, value);
+
+    if (newNode == NULL)
+    {
+        return false;
+    }
+
+    kvPair *current = map->buckets[index];
+
+    if (current == NULL)
+    {
+        map->buckets[index] = newNode;
+        map->numActiveItems++;
+        return true;
+    }
+    else 
+    {
+        while (current->next != NULL) 
+        {
+            current = current->next;
+        }
+
+        current->next = newNode;
+        map->numActiveItems++;
+        return true;
+    }
+}
+
+
+bool getValue(char *key, hashmap *map, float *output) 
+{
+    if (map == NULL || key == NULL)
+    {
+        return false;
+    }
+
+    unsigned long index = hash(key) % MAP_SIZE;
+    kvPair *current = map->buckets[index];
+    
+    while (current != NULL) 
+    {
+        if (strcmp(current->key, key) == 0)
+        {
+            *output = current->value;
+            return true;
+        }
+            
+        current = current->next;
+    }
+
+    return false;
 }
 
 

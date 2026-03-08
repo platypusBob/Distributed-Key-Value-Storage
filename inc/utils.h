@@ -24,7 +24,7 @@
 #define KEY_BYTES 32
 
 
-typedef struct kvPair
+typedef struct kvPair   // Node size = 44 bytes
 {
     char key[KEY_BYTES];
     float value;
@@ -32,10 +32,11 @@ typedef struct kvPair
 } kvPair;
 
 
-typedef struct hashmap
+typedef struct hashmap   // Size = 4 + (MAP_SIZE * 44) bytes
 {
     kvPair *buckets[MAP_SIZE];
     int numActiveItems;
+    // Map is an array of heads of linked lists.
 } hashmap;
 
 
@@ -45,13 +46,15 @@ kvPair* initKvPair(const char *key, float value);
 
 void destroyKvPair(kvPair *node);
 
+void cleanHashmap(hashmap *map);
+
 hashmap* initHashmap();
 
 void destroyHashmap(hashmap *map);
 
-float getValue(char *key, hashmap *map);
-
 bool insertValue(char *key, float value, hashmap *map);
+
+bool getValue(char *key, hashmap *map, float *output);
 
 bool setValue(char *key, float value, hashmap *map);
 
