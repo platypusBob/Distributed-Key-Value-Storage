@@ -26,7 +26,7 @@
 
 typedef struct kvPair
 {
-    const char *key;
+    char key[KEY_BYTES];
     float value;
     struct kvPair *next;   
 } kvPair;
@@ -44,6 +44,10 @@ unsigned long hash(const char* str);
 kvPair* initKvPair(const char *key, float value);
 
 void destroyKvPair(kvPair *node);
+
+hashmap* initHashmap();
+
+void destroyHashmap(hashmap *map);
 
 float getValue(char *key, hashmap *map);
 

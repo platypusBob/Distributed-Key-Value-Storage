@@ -34,7 +34,9 @@ kvPair* initKvPair(const char *key, float value)
     if (node == NULL)
         return NULL;
 
-    node->key = key;
+    strncpy(node->key, key, KEY_BYTES - 1);
+    node->key[KEY_BYTES - 1] = '\0';
+
     node->value = value;
     node->next = NULL;
 
@@ -51,9 +53,40 @@ void destroyKvPair(kvPair *node)
 }
 
 
-bool initHashmap() 
+hashmap* initHashmap() 
 {
-    return false;
+    hashmap *map = (hashmap*)malloc(sizeof(hashmap));
+
+    if (map = NULL)
+        return NULL;
+    
+    for (int i = 0; i < MAP_SIZE; i++)
+    {
+        map->buckets[i] = NULL;
+    }
+
+    return map;
+}
+
+
+void destroyHashmap(hashmap *map) 
+{
+    if (map == NULL)
+        return;
+    
+    for (int i=0; i<MAP_SIZE; i++) 
+    {
+        kvPair *current = map->buckets[i];
+
+        while (current!= NULL)
+        {
+            kvPair *next = current->next;
+            free(current);
+            current = next;
+        }
+    }
+    
+    free(map);
 }
 
 
@@ -65,7 +98,7 @@ float getValue(char *key, hashmap *map)
 
 bool insertValue(char *key, float value, hashmap *map)
 {
-    return 0;
+    
 }
 
 

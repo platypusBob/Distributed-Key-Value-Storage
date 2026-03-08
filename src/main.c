@@ -4,6 +4,8 @@
 
 int main() 
 {
+    // Creating a KV pair
+    
     char *key1 = (char*)calloc(KEY_BYTES, sizeof(char));
     strcpy(key1, "hw:cpu_temp:1710032442");
 
@@ -11,8 +13,9 @@ int main()
 
     kvPair *node1 = initKvPair(key1, value1);
 
-    printf("%s ", node1->key);
-    printf("%f", node1->value);
+    // Creating the hashmap
+
+    
     
     destroyKvPair(node1);
 
