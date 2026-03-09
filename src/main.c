@@ -4,6 +4,8 @@
 
 int main()
 {
+    // Initializing the map ---------------------------------------------------
+
     hashmap *map1 = initHashmap();
 
     if (map1 == NULL)
@@ -11,6 +13,8 @@ int main()
         printf("Hashmap init failed\n");
         return 0;
     }
+
+    // CLI Interface ----------------------------------------------------------
 
     printf("\n");
     printf("--------------------------------\n");
