@@ -15,6 +15,7 @@
 #include "utils.h"
 
 
+// djb2 hash function
 unsigned long hash(const char* str)   // djb2
 {
     unsigned long hash = 5381;
@@ -27,6 +28,7 @@ unsigned long hash(const char* str)   // djb2
 }
 
 
+// Initializes a kv pair with the provided key and value
 kvPair* initKvPair(const char *key, float value) 
 {
     kvPair *node = malloc(sizeof(kvPair));
@@ -46,6 +48,7 @@ kvPair* initKvPair(const char *key, float value)
 }
 
 
+// Frees a kv pair
 void destroyKvPair(kvPair *node)
 {
     if (node == NULL)
@@ -56,7 +59,7 @@ void destroyKvPair(kvPair *node)
     free(node);
 }
 
-
+// Initializes a hashmap
 hashmap* initHashmap() 
 {
     hashmap *map = malloc(sizeof(hashmap));
@@ -77,6 +80,7 @@ hashmap* initHashmap()
 }
 
 
+// Destroys a hashmap
 void destroyHashmap(hashmap *map) 
 {
     if (map == NULL)
@@ -100,6 +104,7 @@ void destroyHashmap(hashmap *map)
 }
 
 
+// Clears a hashmap (wipes the nodes but keeps the map)
 void cleanHashmap(hashmap *map)
 {
     if (map == NULL)
@@ -125,6 +130,7 @@ void cleanHashmap(hashmap *map)
 }
 
 
+// Inserts a node with the provided key and value into the target hashmap
 bool insertValue(char *key, float value, hashmap *map)
 {
     // Keys are assumed to be unique because they include timestamps.
@@ -166,6 +172,7 @@ bool insertValue(char *key, float value, hashmap *map)
 }
 
 
+// Retrieves the value associated with the provided key
 bool getValue(char *key, hashmap *map, float *output) 
 {
     if (map == NULL || key == NULL)
@@ -191,6 +198,7 @@ bool getValue(char *key, hashmap *map, float *output)
 }
 
 
+// Updates the value associated with the existing key
 bool updateValue(char *key, float newValue, hashmap *map) 
 {
     if (key == NULL || map == NULL)
@@ -216,6 +224,9 @@ bool updateValue(char *key, float newValue, hashmap *map)
 }
 
 
+// Deactivates the node associated with the provided key in the target map
+// OBS: this function does not free the memory from that node. It only changes
+// the node's 'active' attribute to 'false'
 void deleteNode(char *key, hashmap *map)
 {
     if (key == NULL || map == NULL)
@@ -241,6 +252,7 @@ void deleteNode(char *key, hashmap *map)
 }
 
 
+// Traverses the map and prints out every node
 void showMap(hashmap *map)
 {
     if (map == NULL)
