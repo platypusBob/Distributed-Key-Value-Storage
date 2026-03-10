@@ -38,6 +38,7 @@ int main()
 
         if (strcmp(input, "QUIT") == 0)
         {
+            printf("\n");
             break;
         }
         else if (strcmp(input, "HELP") == 0)
@@ -48,6 +49,7 @@ int main()
             printf("GET <key>         : returns the value associated with <key>\n");
             printf("SET <key> <value> : sets <key>'s value to <value>\n");
             printf("  Attention: if <key> already exists, SET updates it.\n");
+            printf("SHOW       : prints out the individual nodes\n");
             printf("DEL <key>         : deactivates <key>\n");
             printf("\n");
         }
@@ -137,9 +139,14 @@ int main()
 
             printf("\n");
             printf("--------------------------------\n");
-            printf("Key %s deactivated\N", key);
+            printf("Key %s deactivated\n", key);
             printf("--------------------------------\n");
             printf("\n");
+        }
+        else if (strcmp(command, "SHOW") == 0)
+        {
+            printf("\n");
+            showMap(map1);
         }
         else
         {
