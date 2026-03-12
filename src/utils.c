@@ -242,6 +242,7 @@ void deleteNode(char *key, hashmap *map)
         if (strcmp(current->key, key) == 0)
         {
             current->active = false;
+            map->numActiveItems = map->numActiveItems - 1;
             return;
         }
             

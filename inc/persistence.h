@@ -17,10 +17,13 @@
 #ifndef PERSISTENCE_H
 #define PERSISTENCE_H
 
+#include <stdio.h>
 
-FILE *createLogFile(char *fileName);
 
-void writeToFile(char *command, char *key, float value);
+FILE *openLogFile(const char *fileName);
+
+// Use value = -1.0 if there's no valua argument in the command
+void writeToFile(FILE *file, char *command, char *key, float *value);
 
 void readFile(FILE *file);
 

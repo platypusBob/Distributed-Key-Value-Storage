@@ -15,6 +15,10 @@ int main()
         return 0;
     }
 
+    // Initiating the log file
+
+    FILE *logFile = openLogFile("log.aof");
+
     // CLI Interface ----------------------------------------------------------
 
     printf("\n");
@@ -58,7 +62,9 @@ int main()
         {
             char *key = strtok(NULL, " ");
             float output = 0;
+
             bool opStatus = getValue(key, map1, &output);
+            
 
             if (!opStatus)
             {
@@ -85,7 +91,7 @@ int main()
             bool opStatus = false;
             bool update; // true if the value was updated, false if inserted.
 
-            if (key && value)
+            if (key && valueStr)
             {
                 if (getValue(key, map1, &output))
                 {
@@ -109,6 +115,8 @@ int main()
 
             if (opStatus)
             {
+                writeToFile(logFile, command, key, &value);
+                
                 if (update)
                 {
                     printf("\n");

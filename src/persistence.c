@@ -14,12 +14,13 @@
 *******************************************************************************
 */
 
-#include "persistence.h"
-#include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
+#include "persistence.h"
 
 
-FILE *createLogFile(char *fileName)
+FILE *openLogFile(const char *fileName)
 {
     FILE *log = fopen(fileName, "a");
 
@@ -33,9 +34,22 @@ FILE *createLogFile(char *fileName)
 }
 
 
-void writeToFile(char *command, char *key, float value)
+// Use value = NULL if there is no value argument in the command
+void writeToFile(FILE *file, char *command, char *key, float *value)
 {
-    return;
+    if (value == NULL)
+    {
+        fprintf(file, "%s %s\n", command, key);
+        printf("%s %s\n", command, key);   // For testing
+    }
+    else 
+    {
+        fprintf(file, "%s %s %f\n", command, key, *value);
+        printf("%s %s %f\n", command, key, *value);   // For testing 
+    }
+
+    fflush(file);
+    fsync(fileno(file));
 }
 
 
