@@ -15,11 +15,56 @@ int main()
         return 0;
     }
 
-    // Initiating the log file
+
+    // Initiating the log file and replaying the commands ---------------------
 
     FILE *logFile = openLogFile("log.aof");
+    rewind(logFile);
+    char buffer[BUFFER_SIZE];
 
-    // CLI Interface ----------------------------------------------------------
+    while (fgets(buffer, BUFFER_SIZE, logFile))
+    {
+        char *commandRead = strtok(buffer, " \n");
+        char *keyRead = strtok(NULL, " \n");
+        char *valueStrRead = strtok(NULL, " \n");
+
+        if (commandRead == NULL)
+        {
+            continue;
+        }
+        
+        if (strcmp(commandRead, "SET") == 0)
+        {
+            if (keyRead && valueStrRead)
+            {
+                float valueRead = strtof(valueStrRead, NULL);
+                float outputRead = 0;
+
+                if (getValue(keyRead, map1, &outputRead))
+                {
+                    bool opStatusRead = updateValue(keyRead, valueRead, map1);
+                }
+                else
+                {
+                    bool opStatusRead = insertValue(keyRead, valueRead, map1);
+                }
+            }
+        }
+        else if (strcmp(commandRead, "DEL") == 0)
+        {
+            if (keyRead) 
+            {
+                deleteNode(keyRead, map1);
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+
+    // CLI --------------------------------------------------------------------
 
     printf("\n");
     printf("--------------------------------\n");
@@ -145,6 +190,7 @@ int main()
         {
             char *key = strtok(NULL, " ");
             deleteNode(key, map1);
+            writeToFile(logFile, command, key, NULL);
 
             printf("\n");
             printf("--------------------------------\n");

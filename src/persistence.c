@@ -22,7 +22,7 @@
 
 FILE *openLogFile(const char *fileName)
 {
-    FILE *log = fopen(fileName, "a");
+    FILE *log = fopen(fileName, "a+");
 
     if (log == NULL)
     {
@@ -40,12 +40,10 @@ void writeToFile(FILE *file, char *command, char *key, float *value)
     if (value == NULL)
     {
         fprintf(file, "%s %s\n", command, key);
-        printf("%s %s\n", command, key);   // For testing
     }
     else 
     {
         fprintf(file, "%s %s %f\n", command, key, *value);
-        printf("%s %s %f\n", command, key, *value);   // For testing 
     }
 
     fflush(file);
