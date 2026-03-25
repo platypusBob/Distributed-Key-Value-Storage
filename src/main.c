@@ -63,6 +63,8 @@ int main()
         }
     }
 
+    fseek(logFile, 0, SEEK_END);
+
 
     // CLI --------------------------------------------------------------------
 
@@ -161,7 +163,7 @@ int main()
             if (opStatus)
             {
                 writeToFile(logFile, command, key, &value);
-                
+
                 if (update)
                 {
                     printf("\n");
@@ -212,6 +214,9 @@ int main()
     }
 
     destroyHashmap(map1);
+    map1 = NULL;
+
+    fclose(logFile);
 
     return 0;
 }

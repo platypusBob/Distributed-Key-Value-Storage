@@ -51,10 +51,4 @@ void writeToFile(FILE *file, char *command, char *key, float *value)
 }
 
 
-void readFile(FILE *file)
-{
-    return;
-}
-
-
 
