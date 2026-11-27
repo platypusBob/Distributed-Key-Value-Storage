@@ -21,7 +21,7 @@
 #include <stddef.h>
 #include <string.h>
 
-#define MAP_SIZE 100
+#define MAP_SIZE 1000
 #define KEY_BYTES 32
 
 
